@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Gerador de Senhas</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="container">
+    <h1>Gerador de Senha</h1>
+
+    <label for="letras">Quantidade de letras:</label>
+    <input type="number" id="letras" min="0" value="5">
+
+    <label for="numeros">Quantidade de números:</label>
+    <input type="number" id="numeros" min="0" value="3">
+
+    <button onclick="gerarSenha()">Gerar Senha</button>
+
+    <div class="output" id="saida">
+      <!-- Resultados aparecem aqui -->
+    </div>
+  </div>
+
+  <script>
+    function gerarSenha() {
+      const letras = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      const numeros = '0123456789';
+
+      const qtdLetras = parseInt(document.getElementById('letras').value);
+      const qtdNumeros = parseInt(document.getElementById('numeros').value);
+
+      let senha = '';
+
+      for (let i = 0; i < qtdLetras; i++) {
+        senha += letras.charAt(Math.floor(Math.random() * letras.length));
+      }
+
+      for (let i = 0; i < qtdNumeros; i++) {
+        senha += numeros.charAt(Math.floor(Math.random() * numeros.length));
+      }
+
+      // Embaralhar senha
+      senha = senha.split('').sort(() => Math.random() - 0.5).join('');
+
+      // Calcular entropia
+      const tamanhoAlfabeto = letras.length + numeros.length;
+      const tamanhoSenha = qtdLetras + qtdNumeros;
+      const entropia = (tamanhoSenha * Math.log2(tamanhoAlfabeto)).toFixed(2);
+
+      document.getElementById('saida').innerHTML = `
+        <p class="password">🔐 Senha: ${senha}</p>
+        <p class="entropy">⚡ Entropia: ${entropia} bits</p>
+      `;
+    }
+  </script>
+
+</body>
+</html>
